@@ -22,4 +22,3 @@ class DeactivateUserUseCase:
             Deactivated User entity
         """
         return await self.repository.deactivate(user)
-

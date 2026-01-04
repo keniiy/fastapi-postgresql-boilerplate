@@ -46,4 +46,3 @@ class LogoutUseCase:
 
         # Token is valid - logout successful (client should discard token)
         return
-

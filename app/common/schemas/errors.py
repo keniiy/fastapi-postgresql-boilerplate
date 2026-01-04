@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 
 class ErrorDetail(BaseModel):
     """Single error detail"""
+
     field: Optional[str] = None
     message: str
     code: Optional[str] = None
@@ -16,6 +17,7 @@ class ErrorDetail(BaseModel):
 
 class ErrorResponse(BaseModel):
     """Standard error response format"""
+
     error: str = Field(..., description="Error type/class name")
     message: str = Field(..., description="Human-readable error message")
     code: str = Field(..., description="Error code for programmatic handling")
@@ -34,13 +36,12 @@ class ErrorResponse(BaseModel):
                     {
                         "field": "email",
                         "message": "Email is required when phone is not provided",
-                        "code": "REQUIRED_FIELD"
+                        "code": "REQUIRED_FIELD",
                     }
                 ],
                 "timestamp": "2024-01-01T00:00:00Z",
                 "path": "/api/v1/auth/register",
-                "trace_id": "550e8400-e29b-41d4-a716-446655440000"
+                "trace_id": "550e8400-e29b-41d4-a716-446655440000",
             }
         }
     }
-

@@ -22,11 +22,7 @@ def _create_engine():
 
     # Handle PostgreSQL - convert to async driver
     if database_url.startswith("postgresql://"):
-        database_url = database_url.replace(
-            "postgresql://",
-            "postgresql+asyncpg://",
-            1
-        )
+        database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
     return create_async_engine(
         database_url,

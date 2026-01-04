@@ -8,6 +8,7 @@ from datetime import datetime
 
 class UserResponse(BaseModel):
     """Reusable user profile response"""
+
     id: int
     email: Optional[str] = None
     phone: Optional[str] = None
@@ -26,14 +27,15 @@ class UserResponse(BaseModel):
                 "role": "student",
                 "is_active": True,
                 "created_at": "2024-01-01T00:00:00Z",
-                "updated_at": "2024-01-01T00:00:00Z"
+                "updated_at": "2024-01-01T00:00:00Z",
             }
-        }
+        },
     )
 
 
 class AuthResponse(BaseModel):
     """Authentication response with tokens and user info"""
+
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
@@ -52,9 +54,8 @@ class AuthResponse(BaseModel):
                     "role": "student",
                     "is_active": True,
                     "created_at": "2024-01-01T00:00:00Z",
-                    "updated_at": "2024-01-01T00:00:00Z"
-                }
+                    "updated_at": "2024-01-01T00:00:00Z",
+                },
             }
         }
     )
-

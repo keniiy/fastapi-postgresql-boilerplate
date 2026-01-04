@@ -12,12 +12,7 @@ class ChangePasswordUseCase:
     def __init__(self, user_repository: IUserRepository):
         self.repository = user_repository
 
-    async def execute(
-        self,
-        user_id: int,
-        current_password: str,
-        new_password: str
-    ) -> None:
+    async def execute(self, user_id: int, current_password: str, new_password: str) -> None:
         """
         Change user password.
 
@@ -34,18 +29,13 @@ class ChangePasswordUseCase:
         # Validate new password
         if not new_password or len(new_password) < 8:
             raise ValidationError(
-                "New password must be at least 8 characters",
-                field="new_password"
+                "New password must be at least 8 characters", field="new_password"
             )
 
         # Get user with password - we need email or phone to get password
         user = await self.repository.get_by_id(user_id)
         if not user:
-            raise NotFoundError(
-                "User not found",
-                resource="user",
-                details={"user_id": user_id}
-            )
+            raise NotFoundError("User not found", resource="user", details={"user_id": user_id})
 
         # Get password hash via email or phone
         result = None
@@ -68,4 +58,3 @@ class ChangePasswordUseCase:
 
         # Update password in database
         await self.repository.update_password(user_id, new_password_hash)
-

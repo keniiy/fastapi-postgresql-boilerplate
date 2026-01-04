@@ -17,7 +17,7 @@ class UpdateUserUseCase:
         user: User,
         email: str | None = None,
         phone: str | None = None,
-        role: str | None = None
+        role: str | None = None,
     ) -> User:
         """
         Update user information.
@@ -38,6 +38,7 @@ class UpdateUserUseCase:
             user.phone = phone
         if role is not None:
             from app.common.enums.user import UserRole
+
             user.role = UserRole(role)
 
         # Update timestamp
@@ -45,4 +46,3 @@ class UpdateUserUseCase:
 
         # Save via repository
         return await self.repository.update(user)
-

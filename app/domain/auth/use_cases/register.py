@@ -17,10 +17,7 @@ class RegisterUseCase:
         self.create_user = CreateUserUseCase(user_repository)
 
     async def execute(
-        self,
-        email: Optional[str] = None,
-        phone: Optional[str] = None,
-        password: str = ""
+        self, email: Optional[str] = None, phone: Optional[str] = None, password: str = ""
     ) -> User:
         """
         Register a new user.
@@ -39,19 +36,12 @@ class RegisterUseCase:
         """
         # Validate password
         if not password or len(password) < 8:
-            raise ValidationError(
-                "Password must be at least 8 characters",
-                field="password"
-            )
+            raise ValidationError("Password must be at least 8 characters", field="password")
 
         # Hash password using Argon2
         password_hash = hash_password(password)
 
         # Create user via user use case
         return await self.create_user.execute(
-            email=email,
-            phone=phone,
-            password_hash=password_hash,
-            role=UserRole.STUDENT
+            email=email, phone=phone, password_hash=password_hash, role=UserRole.STUDENT
         )
-

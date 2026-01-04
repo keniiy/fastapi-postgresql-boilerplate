@@ -41,7 +41,7 @@ async def test_engine():
         TEST_DATABASE_URL,
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
-        echo=False
+        echo=False,
     )
 
     # Create all tables
@@ -61,10 +61,7 @@ async def test_engine():
 async def test_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
     """Create test database session"""
     async_session = async_sessionmaker(
-        test_engine,
-        class_=AsyncSession,
-        expire_on_commit=False,
-        autoflush=False
+        test_engine, class_=AsyncSession, expire_on_commit=False, autoflush=False
     )
 
     async with async_session() as session:
@@ -91,17 +88,10 @@ async def client(test_session: AsyncSession) -> AsyncGenerator[AsyncClient, None
 @pytest.fixture
 def test_user_data():
     """Sample user data for tests"""
-    return {
-        "email": "test@example.com",
-        "password": "testpassword123"
-    }
+    return {"email": "test@example.com", "password": "testpassword123"}
 
 
 @pytest.fixture
 def test_user_phone_data():
     """Sample user data with phone for tests"""
-    return {
-        "phone": "+1234567890",
-        "password": "testpassword123"
-    }
-
+    return {"phone": "+1234567890", "password": "testpassword123"}

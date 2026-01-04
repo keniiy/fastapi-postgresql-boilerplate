@@ -55,4 +55,3 @@ class IUserRepository(ABC):
     async def deactivate(self, user: User) -> User:
         """Deactivate user (soft delete)"""
         pass
-

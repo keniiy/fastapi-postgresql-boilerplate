@@ -6,12 +6,8 @@ from typing import Optional, Dict, Any
 
 class DomainException(Exception):
     """Base exception for all domain errors"""
-    def __init__(
-        self,
-        message: str,
-        code: str = None,
-        details: Optional[Dict[str, Any]] = None
-    ):
+
+    def __init__(self, message: str, code: str = None, details: Optional[Dict[str, Any]] = None):
         self.message = message
         self.code = code or self._get_default_code()
         self.details = details or {}
@@ -24,6 +20,7 @@ class DomainException(Exception):
 
 class ValidationError(DomainException):
     """400 - Validation error"""
+
     def __init__(self, message: str, field: str = None, **kwargs):
         self.field = field
         super().__init__(message, code="VALIDATION_ERROR", **kwargs)
@@ -31,6 +28,7 @@ class ValidationError(DomainException):
 
 class NotFoundError(DomainException):
     """404 - Resource not found"""
+
     def __init__(self, message: str, resource: str = None, **kwargs):
         self.resource = resource
         super().__init__(message, code="NOT_FOUND", **kwargs)
@@ -38,18 +36,21 @@ class NotFoundError(DomainException):
 
 class UnauthorizedError(DomainException):
     """401 - Unauthorized"""
+
     def __init__(self, message: str = "Unauthorized", **kwargs):
         super().__init__(message, code="UNAUTHORIZED", **kwargs)
 
 
 class ForbiddenError(DomainException):
     """403 - Forbidden"""
+
     def __init__(self, message: str = "Forbidden", **kwargs):
         super().__init__(message, code="FORBIDDEN", **kwargs)
 
 
 class ConflictError(DomainException):
     """409 - Resource conflict"""
+
     def __init__(self, message: str, resource: str = None, **kwargs):
         self.resource = resource
         super().__init__(message, code="CONFLICT", **kwargs)
@@ -57,6 +58,6 @@ class ConflictError(DomainException):
 
 class InternalServerError(DomainException):
     """500 - Internal server error"""
+
     def __init__(self, message: str = "Internal server error", **kwargs):
         super().__init__(message, code="INTERNAL_SERVER_ERROR", **kwargs)
-

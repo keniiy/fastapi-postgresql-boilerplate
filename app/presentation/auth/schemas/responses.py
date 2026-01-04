@@ -11,6 +11,7 @@ __all__ = ["AuthResponse", "UserResponse", "TokenResponse"]
 
 class TokenResponse(BaseModel):
     """JWT token response (for refresh token endpoint)"""
+
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
@@ -20,8 +21,7 @@ class TokenResponse(BaseModel):
             "example": {
                 "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
                 "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                "token_type": "bearer"
+                "token_type": "bearer",
             }
         }
     )
-

@@ -14,6 +14,7 @@ class User:
     User domain entity.
     Represents a user in the business domain.
     """
+
     id: Optional[int]
     email: Optional[str]
     phone: Optional[str]
@@ -45,4 +46,3 @@ class User:
     def is_student(self) -> bool:
         """Check if user is student"""
         return self.role == UserRole.STUDENT
-

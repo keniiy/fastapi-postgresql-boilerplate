@@ -22,23 +22,16 @@ class UserRepository(BaseRepository[User]):
 
     async def get_by_email(self, db: AsyncSession, email: str) -> Optional[User]:
         """Get user by email"""
-        result = await db.execute(
-            select(User).where(User.email == email)
-        )
+        result = await db.execute(select(User).where(User.email == email))
         return result.scalar_one_or_none()
 
     async def get_by_phone(self, db: AsyncSession, phone: str) -> Optional[User]:
         """Get user by phone"""
-        result = await db.execute(
-            select(User).where(User.phone == phone)
-        )
+        result = await db.execute(select(User).where(User.phone == phone))
         return result.scalar_one_or_none()
 
     async def get_by_email_or_phone(
-        self,
-        db: AsyncSession,
-        email: str | None = None,
-        phone: str | None = None
+        self, db: AsyncSession, email: str | None = None, phone: str | None = None
     ) -> Optional[User]:
         """Get user by email or phone"""
         if email:
@@ -53,10 +46,7 @@ class UserRepository(BaseRepository[User]):
         return await self.update(db, user)
 
     async def get_all_active(
-        self,
-        db: AsyncSession,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncSession, skip: int = 0, limit: Optional[int] = None
     ) -> List[User]:
         """
         Get all active users.
@@ -70,9 +60,7 @@ class UserRepository(BaseRepository[User]):
         return result.scalars().all()
 
     async def get_all_active_paginated(
-        self,
-        db: AsyncSession,
-        pagination: PaginationParams
+        self, db: AsyncSession, pagination: PaginationParams
     ) -> PaginatedResponse[User]:
         """
         Get all active users with pagination and metadata.
@@ -82,27 +70,19 @@ class UserRepository(BaseRepository[User]):
         total = await self._count_active(db)
 
         # Get paginated items
-        items = await self.get_all_active(
-            db,
-            skip=pagination.skip,
-            limit=pagination.limit
-        )
+        items = await self.get_all_active(db, skip=pagination.skip, limit=pagination.limit)
 
         # Create metadata
         from app.common.utils.pagination import PaginationMeta
+
         meta = PaginationMeta.create(
-            total=total,
-            page=pagination.page,
-            page_size=pagination.page_size
+            total=total, page=pagination.page, page_size=pagination.page_size
         )
 
         return PaginatedResponse(items=items, meta=meta)
 
     async def get_all_active_with_count(
-        self,
-        db: AsyncSession,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncSession, skip: int = 0, limit: Optional[int] = None
     ) -> Tuple[List[User], int]:
         """
         Get all active users with total count.
@@ -117,22 +97,13 @@ class UserRepository(BaseRepository[User]):
         return items, total
 
     async def get_by_role(
-        self,
-        db: AsyncSession,
-        role: str,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncSession, role: str, skip: int = 0, limit: Optional[int] = None
     ) -> List[User]:
         """
         Get users by role.
         Can be used with or without pagination (limit=None returns all).
         """
-        query = (
-            select(User)
-            .where(User.role == role)
-            .where(User.is_active == True)
-            .offset(skip)
-        )
+        query = select(User).where(User.role == role).where(User.is_active == True).offset(skip)
         if limit is not None:
             query = query.limit(limit)
 
@@ -140,10 +111,7 @@ class UserRepository(BaseRepository[User]):
         return result.scalars().all()
 
     async def get_by_role_paginated(
-        self,
-        db: AsyncSession,
-        role: str,
-        pagination: PaginationParams
+        self, db: AsyncSession, role: str, pagination: PaginationParams
     ) -> PaginatedResponse[User]:
         """
         Get users by role with pagination and metadata.
@@ -153,29 +121,19 @@ class UserRepository(BaseRepository[User]):
         total = await self._count_by_role(db, role)
 
         # Get paginated items
-        items = await self.get_by_role(
-            db,
-            role=role,
-            skip=pagination.skip,
-            limit=pagination.limit
-        )
+        items = await self.get_by_role(db, role=role, skip=pagination.skip, limit=pagination.limit)
 
         # Create metadata
         from app.common.utils.pagination import PaginationMeta
+
         meta = PaginationMeta.create(
-            total=total,
-            page=pagination.page,
-            page_size=pagination.page_size
+            total=total, page=pagination.page, page_size=pagination.page_size
         )
 
         return PaginatedResponse(items=items, meta=meta)
 
     async def get_by_role_with_count(
-        self,
-        db: AsyncSession,
-        role: str,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncSession, role: str, skip: int = 0, limit: Optional[int] = None
     ) -> Tuple[List[User], int]:
         """
         Get users by role with total count.
@@ -205,4 +163,3 @@ class UserRepository(BaseRepository[User]):
             .where(User.is_active == True)
         )
         return result.scalar() or 0
-

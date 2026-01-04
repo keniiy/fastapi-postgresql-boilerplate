@@ -16,10 +16,7 @@ class LoginUseCase:
         self.repository = user_repository
 
     async def execute(
-        self,
-        email: Optional[str] = None,
-        phone: Optional[str] = None,
-        password: str = ""
+        self, email: Optional[str] = None, phone: Optional[str] = None, password: str = ""
     ) -> Tuple[User, Dict[str, str]]:
         """
         Login user and return user + tokens.
@@ -38,10 +35,7 @@ class LoginUseCase:
         """
         # Validate input
         if not email and not phone:
-            raise ValidationError(
-                "Email or phone is required",
-                field="credentials"
-            )
+            raise ValidationError("Email or phone is required", field="credentials")
 
         # Get user with password hash
         result = None
@@ -70,8 +64,7 @@ class LoginUseCase:
         tokens = {
             "access_token": access_token,
             "refresh_token": refresh_token,
-            "token_type": "bearer"
+            "token_type": "bearer",
         }
 
         return user, tokens
-

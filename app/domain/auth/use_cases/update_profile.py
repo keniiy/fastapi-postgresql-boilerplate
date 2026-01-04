@@ -17,10 +17,7 @@ class UpdateProfileUseCase:
         self.update_user = UpdateUserUseCase(user_repository)
 
     async def execute(
-        self,
-        user_id: int,
-        email: Optional[str] = None,
-        phone: Optional[str] = None
+        self, user_id: int, email: Optional[str] = None, phone: Optional[str] = None
     ) -> User:
         """
         Update user profile.
@@ -39,16 +36,7 @@ class UpdateProfileUseCase:
         # Get user
         user = await self.get_by_id.execute(user_id)
         if not user:
-            raise NotFoundError(
-                "User not found",
-                resource="user",
-                details={"user_id": user_id}
-            )
+            raise NotFoundError("User not found", resource="user", details={"user_id": user_id})
 
         # Update user
-        return await self.update_user.execute(
-            user=user,
-            email=email,
-            phone=phone
-        )
-
+        return await self.update_user.execute(user=user, email=email, phone=phone)

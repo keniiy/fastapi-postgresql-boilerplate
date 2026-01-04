@@ -37,8 +37,7 @@ class BaseTask(Task):
         set_trace_id(trace_id)
 
         logger.info(
-            f"Task started: {self.name}",
-            extra={"task_id": task_id, "args": args, "kwargs": kwargs}
+            f"Task started: {self.name}", extra={"task_id": task_id, "args": args, "kwargs": kwargs}
         )
 
     def on_success(
@@ -50,8 +49,7 @@ class BaseTask(Task):
     ) -> None:
         """Called on task success"""
         logger.info(
-            f"Task completed: {self.name}",
-            extra={"task_id": task_id, "result": str(retval)[:100]}
+            f"Task completed: {self.name}", extra={"task_id": task_id, "result": str(retval)[:100]}
         )
 
     def on_failure(
@@ -89,7 +87,7 @@ class BaseTask(Task):
                 "task_id": task_id,
                 "error": str(exc),
                 "retry_count": self.request.retries,
-            }
+            },
         )
 
     def after_return(
@@ -104,4 +102,3 @@ class BaseTask(Task):
         """Called after task returns (success or failure)"""
         # Clear trace ID
         set_trace_id(None)
-

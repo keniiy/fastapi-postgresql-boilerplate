@@ -12,7 +12,7 @@ from .exceptions import (
     UnauthorizedError,
     ForbiddenError,
     ConflictError,
-    InternalServerError
+    InternalServerError,
 )
 
 __all__ = [

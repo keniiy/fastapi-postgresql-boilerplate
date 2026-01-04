@@ -29,11 +29,6 @@ class GetCurrentUserUseCase:
         user = await self.get_by_id.execute(user_id)
 
         if not user:
-            raise NotFoundError(
-                "User not found",
-                resource="user",
-                details={"user_id": user_id}
-            )
+            raise NotFoundError("User not found", resource="user", details={"user_id": user_id})
 
         return user
-

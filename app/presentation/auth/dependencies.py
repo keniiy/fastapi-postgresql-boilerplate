@@ -22,58 +22,56 @@ security = HTTPBearer()
 
 
 # Repository adapter dependency
-def get_user_repository_adapter(
-    db: AsyncSession = Depends(get_db)
-) -> UserRepositoryAdapter:
+def get_user_repository_adapter(db: AsyncSession = Depends(get_db)) -> UserRepositoryAdapter:
     """Get user repository adapter instance"""
     return UserRepositoryAdapter(db)
 
 
 # Auth use case dependencies
 def get_register_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> RegisterUseCase:
     """Get register use case"""
     return RegisterUseCase(repository)
 
 
 def get_login_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> LoginUseCase:
     """Get login use case"""
     return LoginUseCase(repository)
 
 
 def get_refresh_token_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> RefreshTokenUseCase:
     """Get refresh token use case"""
     return RefreshTokenUseCase(repository)
 
 
 def get_current_user_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> GetCurrentUserUseCase:
     """Get current user use case"""
     return GetCurrentUserUseCase(repository)
 
 
 def get_update_profile_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> UpdateProfileUseCase:
     """Get update profile use case"""
     return UpdateProfileUseCase(repository)
 
 
 def get_change_password_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> ChangePasswordUseCase:
     """Get change password use case"""
     return ChangePasswordUseCase(repository)
 
 
 def get_deactivate_account_use_case(
-    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter)
+    repository: UserRepositoryAdapter = Depends(get_user_repository_adapter),
 ) -> DeactivateAccountUseCase:
     """Get deactivate account use case"""
     return DeactivateAccountUseCase(repository)
@@ -85,13 +83,10 @@ def get_logout_use_case() -> LogoutUseCase:
 
 
 # Authentication dependency
-def get_current_user_id(
-    credentials: HTTPAuthorizationCredentials = Depends(security)
-) -> int:
+def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(security)) -> int:
     """Extract user ID from JWT token"""
     token = credentials.credentials
     user_id = get_user_id_from_token(token)
     if not user_id:
         raise UnauthorizedError("Invalid or expired token")
     return user_id
-

@@ -49,4 +49,3 @@ def get_trace_id(request: Request) -> Optional[str]:
     For new code, use app.common.utils.logging.get_trace_id() instead.
     """
     return getattr(request.state, "trace_id", None) or get_trace_id_from_context()
-

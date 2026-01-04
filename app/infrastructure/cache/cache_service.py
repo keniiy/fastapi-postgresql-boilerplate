@@ -179,6 +179,7 @@ class CacheService:
         # Compute value
         if callable(factory):
             import asyncio
+
             if asyncio.iscoroutinefunction(factory):
                 value = await factory()
             else:
@@ -221,6 +222,7 @@ def cached(
         async def get_user(user_id: int) -> User:
             ...
     """
+
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         @wraps(func)
         async def wrapper(*args, **kwargs) -> T:
@@ -247,5 +249,5 @@ def cached(
             return result
 
         return wrapper
-    return decorator
 
+    return decorator

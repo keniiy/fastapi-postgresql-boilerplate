@@ -60,17 +60,10 @@ class BaseRepository(ABC, Generic[ModelType]):
         Returns:
             Model instance if found, None otherwise
         """
-        result = await db.execute(
-            select(self.model).where(self.model.id == id)
-        )
+        result = await db.execute(select(self.model).where(self.model.id == id))
         return result.scalar_one_or_none()
 
-    async def get_all(
-        self,
-        db: AsyncSession,
-        skip: int = 0,
-        limit: int = 100
-    ) -> List[ModelType]:
+    async def get_all(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[ModelType]:
         """
         Get all records with pagination.
 
@@ -82,17 +75,11 @@ class BaseRepository(ABC, Generic[ModelType]):
         Returns:
             List of model instances
         """
-        result = await db.execute(
-            select(self.model)
-            .offset(skip)
-            .limit(limit)
-        )
+        result = await db.execute(select(self.model).offset(skip).limit(limit))
         return result.scalars().all()
 
     async def get_all_paginated(
-        self,
-        db: AsyncSession,
-        pagination: PaginationParams
+        self, db: AsyncSession, pagination: PaginationParams
     ) -> PaginatedResponse[ModelType]:
         """
         Get all records with pagination and metadata.
@@ -112,19 +99,15 @@ class BaseRepository(ABC, Generic[ModelType]):
 
         # Create metadata
         from app.common.utils.pagination import PaginationMeta
+
         meta = PaginationMeta.create(
-            total=total,
-            page=pagination.page,
-            page_size=pagination.page_size
+            total=total, page=pagination.page, page_size=pagination.page_size
         )
 
         return PaginatedResponse(items=items, meta=meta)
 
     async def get_all_with_count(
-        self,
-        db: AsyncSession,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncSession, skip: int = 0, limit: Optional[int] = None
     ) -> Tuple[List[ModelType], int]:
         """
         Get all records with total count.
@@ -195,7 +178,5 @@ class BaseRepository(ABC, Generic[ModelType]):
         Returns:
             Total count of records
         """
-        result = await db.execute(
-            select(func.count()).select_from(self.model)
-        )
+        result = await db.execute(select(func.count()).select_from(self.model))
         return result.scalar() or 0

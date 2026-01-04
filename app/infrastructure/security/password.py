@@ -7,11 +7,11 @@ from argon2.exceptions import VerifyMismatchError, InvalidHashError
 
 # Initialize hasher with secure defaults
 _hasher = PasswordHasher(
-    time_cost=2,        # Number of iterations
+    time_cost=2,  # Number of iterations
     memory_cost=65536,  # 64MB memory usage
-    parallelism=1,      # Number of parallel threads
-    hash_len=32,        # Length of the hash
-    salt_len=16         # Length of the salt
+    parallelism=1,  # Number of parallel threads
+    hash_len=32,  # Length of the hash
+    salt_len=16,  # Length of the salt
 )
 
 
@@ -58,4 +58,3 @@ def needs_rehash(password_hash: str) -> bool:
         True if rehash is needed, False otherwise
     """
     return _hasher.check_needs_rehash(password_hash)
-

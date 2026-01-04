@@ -31,7 +31,7 @@ class UserRepositoryAdapter(IUserRepository):
             role=UserRole(model.role.value) if model.role else UserRole.STUDENT,
             is_active=model.is_active,
             created_at=model.created_at,
-            updated_at=model.updated_at
+            updated_at=model.updated_at,
         )
 
     async def create(self, user: User, password_hash: str = "") -> User:
@@ -43,7 +43,7 @@ class UserRepositoryAdapter(IUserRepository):
             role=user.role,
             is_active=user.is_active,
             created_at=user.created_at,
-            updated_at=user.updated_at
+            updated_at=user.updated_at,
         )
         created = await self._repo.create(self.db, model)
         return self._model_to_entity(created)
@@ -113,4 +113,3 @@ class UserRepositoryAdapter(IUserRepository):
 
         deactivated = await self._repo.deactivate(self.db, model)
         return self._model_to_entity(deactivated)
-

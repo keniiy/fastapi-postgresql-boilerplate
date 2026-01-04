@@ -11,6 +11,7 @@ class User(BaseModel):
     User database model.
     Represents the 'users' table in the database.
     """
+
     __tablename__ = "users"
 
     email = Column(String, unique=True, index=True, nullable=True)
@@ -21,4 +22,3 @@ class User(BaseModel):
 
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email}, role={self.role.value})>"
-

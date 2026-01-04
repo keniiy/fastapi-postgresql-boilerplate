@@ -35,6 +35,7 @@ class Settings(BaseSettings):
             # Try JSON array first
             if v.strip().startswith("["):
                 import json
+
                 try:
                     return json.loads(v)
                 except json.JSONDecodeError:

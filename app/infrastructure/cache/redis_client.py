@@ -108,4 +108,3 @@ async def redis_connection():
         yield redis_client
     finally:
         await redis_client.disconnect()
-

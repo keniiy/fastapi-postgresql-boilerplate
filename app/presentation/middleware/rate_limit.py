@@ -16,9 +16,11 @@ settings = get_settings()
 # Initialize rate limiter with global default
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=[settings.rate_limit_default] if settings.rate_limit_enabled else [],  # Global default
+    default_limits=[settings.rate_limit_default]
+    if settings.rate_limit_enabled
+    else [],  # Global default
     storage_uri=settings.rate_limit_storage,  # Use Redis in production: "redis://localhost:6379"
-    headers_enabled=True  # Add rate limit headers to responses
+    headers_enabled=True,  # Add rate limit headers to responses
 )
 
 
@@ -65,7 +67,7 @@ async def rate_limit_exception_handler(request: Request, exc: RateLimitExceeded)
         message="Rate limit exceeded. Please try again later.",
         code="RATE_LIMIT_EXCEEDED",
         path=str(request.url.path),
-        trace_id=trace_id
+        trace_id=trace_id,
     )
 
     # Extract rate limit info from exception
@@ -74,15 +76,17 @@ async def rate_limit_exception_handler(request: Request, exc: RateLimitExceeded)
     response = JSONResponse(
         status_code=status.HTTP_429_TOO_MANY_REQUESTS,
         content=error_response.model_dump(),
-        headers={
-            "X-Trace-ID": trace_id or "",
-            "Retry-After": str(retry_after)
-        }
+        headers={"X-Trace-ID": trace_id or "", "Retry-After": str(retry_after)},
     )
 
     return response
 
 
 # Export RateLimitExceeded for use in other modules
-__all__ = ["limiter", "rate_limit", "rate_limit_exception_handler", "RateLimitMiddleware", "RateLimitExceeded"]
-
+__all__ = [
+    "limiter",
+    "rate_limit",
+    "rate_limit_exception_handler",
+    "RateLimitMiddleware",
+    "RateLimitExceeded",
+]

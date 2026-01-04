@@ -20,7 +20,7 @@ class CreateUserUseCase:
         email: Optional[str] = None,
         phone: Optional[str] = None,
         password_hash: str = "",
-        role: UserRole = UserRole.STUDENT
+        role: UserRole = UserRole.STUDENT,
     ) -> User:
         """
         Create a new user.
@@ -43,7 +43,7 @@ class CreateUserUseCase:
             raise ValidationError(
                 "Email or phone is required",
                 field="email_or_phone",
-                details={"email": email, "phone": phone}
+                details={"email": email, "phone": phone},
             )
 
         # Check if user already exists
@@ -51,18 +51,14 @@ class CreateUserUseCase:
             existing = await self.repository.get_by_email(email)
             if existing:
                 raise ConflictError(
-                    "User with this email already exists",
-                    resource="user",
-                    details={"email": email}
+                    "User with this email already exists", resource="user", details={"email": email}
                 )
 
         if phone:
             existing = await self.repository.get_by_phone(phone)
             if existing:
                 raise ConflictError(
-                    "User with this phone already exists",
-                    resource="user",
-                    details={"phone": phone}
+                    "User with this phone already exists", resource="user", details={"phone": phone}
                 )
 
         # Create user entity
@@ -73,9 +69,8 @@ class CreateUserUseCase:
             role=role,
             is_active=True,
             created_at=datetime.now(),
-            updated_at=None
+            updated_at=None,
         )
 
         # Save via repository
         return await self.repository.create(user, password_hash)
-

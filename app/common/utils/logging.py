@@ -60,9 +60,10 @@ def setup_logging(log_level: str = "INFO", json_format: bool = True) -> None:
         # JSON structured logging (for production/log aggregation)
         class JsonFormatterWithTraceID(jsonlogger.JsonFormatter):
             """JSON formatter with trace ID support"""
+
             def format(self, record):
                 # Add trace_id to record before formatting
-                if not hasattr(record, 'trace_id'):
+                if not hasattr(record, "trace_id"):
                     record.trace_id = get_trace_id() or "N/A"
                 return super().format(record)
 
@@ -74,15 +75,15 @@ def setup_logging(log_level: str = "INFO", json_format: bool = True) -> None:
                 "name": "logger",
                 "levelname": "level",
                 "message": "message",
-                "trace_id": "trace_id"
+                "trace_id": "trace_id",
             },
-            static_fields={"service": "api"}
+            static_fields={"service": "api"},
         )
     else:
         # Standard readable format (for development)
         formatter = logging.Formatter(
             fmt="%(asctime)s | %(levelname)-8s | %(name)s | [%(trace_id)s] | %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S"
+            datefmt="%Y-%m-%d %H:%M:%S",
         )
 
     handler.setFormatter(formatter)
@@ -105,4 +106,3 @@ def get_logger(name: str) -> logging.Logger:
         Logger instance
     """
     return logging.getLogger(name)
-

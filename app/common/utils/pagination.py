@@ -10,6 +10,7 @@ T = TypeVar("T")
 
 class PaginationParams(BaseModel):
     """Pagination parameters"""
+
     page: int = 1
     page_size: int = 20
     skip: int | None = None
@@ -26,6 +27,7 @@ class PaginationParams(BaseModel):
 
 class PaginationMeta(BaseModel):
     """Pagination metadata for frontend"""
+
     total: int
     page: int
     page_size: int
@@ -43,7 +45,7 @@ class PaginationMeta(BaseModel):
             page_size=page_size,
             total_pages=total_pages,
             has_next=page < total_pages,
-            has_previous=page > 1
+            has_previous=page > 1,
         )
 
 
@@ -53,6 +55,6 @@ class PaginatedResponse(Generic[T]):
     Paginated response with data and metadata.
     Uses dataclass instead of Pydantic to avoid type conflicts with SQLAlchemy models.
     """
+
     items: List[T]
     meta: PaginationMeta
-

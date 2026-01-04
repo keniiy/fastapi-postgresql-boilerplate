@@ -37,4 +37,3 @@ class GetUserByPhoneUseCase:
     async def execute(self, phone: str) -> Optional[User]:
         """Get user by phone"""
         return await self.repository.get_by_phone(phone)
-

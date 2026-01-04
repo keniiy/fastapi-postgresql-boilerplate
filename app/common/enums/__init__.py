@@ -7,4 +7,3 @@ from .user import UserRole
 from .course import CourseStatus
 
 __all__ = ["UserRole", "CourseStatus"]
-

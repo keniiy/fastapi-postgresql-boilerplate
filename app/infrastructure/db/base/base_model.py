@@ -16,6 +16,7 @@ class BaseModel(Base):
     Abstract base model with common fields.
     All models should inherit from this for audit fields.
     """
+
     __abstract__ = True  # This means SQLAlchemy won't create a table for this
 
     id = Column(Integer, primary_key=True, index=True)
@@ -24,4 +25,3 @@ class BaseModel(Base):
 
     def __repr__(self):
         return f"<{self.__class__.__name__}(id={self.id})>"
-

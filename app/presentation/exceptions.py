@@ -14,7 +14,7 @@ from app.common.exceptions import (
     UnauthorizedError,
     ForbiddenError,
     ConflictError,
-    InternalServerError
+    InternalServerError,
 )
 from app.common.schemas.errors import ErrorResponse, ErrorDetail
 from app.core.config import get_settings
@@ -34,12 +34,7 @@ EXCEPTION_STATUS_MAP: Dict[Type[DomainException], int] = {
 
 
 def create_error_response(
-    error: str,
-    message: str,
-    code: str,
-    status_code: int,
-    request: Request,
-    details: list = None
+    error: str, message: str, code: str, status_code: int, request: Request, details: list = None
 ) -> JSONResponse:
     """Create standardized error response"""
     from app.common.utils.logging import get_trace_id
@@ -51,13 +46,10 @@ def create_error_response(
         code=code,
         details=details,
         path=str(request.url.path),
-        trace_id=trace_id
+        trace_id=trace_id,
     )
 
-    response = JSONResponse(
-        status_code=status_code,
-        content=error_response.model_dump()
-    )
+    response = JSONResponse(status_code=status_code, content=error_response.model_dump())
 
     # Add trace ID to response headers
     if trace_id:
@@ -74,30 +66,19 @@ async def domain_exception_handler(request: Request, exc: DomainException) -> JS
     # Build details list
     details = []
     if isinstance(exc, ValidationError) and exc.field:
-        details.append(ErrorDetail(
-            field=exc.field,
-            message=exc.message,
-            code=exc.code
-        ))
+        details.append(ErrorDetail(field=exc.field, message=exc.message, code=exc.code))
     elif isinstance(exc, NotFoundError) and exc.resource:
-        details.append(ErrorDetail(
-            message=exc.message,
-            code=exc.code,
-            value=exc.resource
-        ))
+        details.append(ErrorDetail(message=exc.message, code=exc.code, value=exc.resource))
     elif exc.details:
         for key, value in exc.details.items():
-            details.append(ErrorDetail(
-                field=key,
-                message=str(value),
-                code=exc.code
-            ))
+            details.append(ErrorDetail(field=key, message=str(value), code=exc.code))
 
     # Log error with trace ID (automatically included via logging filter)
     from app.common.utils.logging import get_trace_id
+
     logger.warning(
         f"Domain exception: {exc.__class__.__name__} - {exc.message}",
-        extra={"path": request.url.path, "code": exc.code}
+        extra={"path": request.url.path, "code": exc.code},
     )
 
     return create_error_response(
@@ -106,26 +87,31 @@ async def domain_exception_handler(request: Request, exc: DomainException) -> JS
         code=exc.code,
         status_code=status_code,
         request=request,
-        details=details if details else None
+        details=details if details else None,
     )
 
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+async def validation_exception_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
     """Handle Pydantic validation errors with detailed field errors"""
     details = []
     for error in exc.errors():
         field_path = ".".join(str(loc) for loc in error["loc"] if loc != "body")
-        details.append(ErrorDetail(
-            field=field_path or "body",
-            message=error["msg"],
-            code=error["type"],
-            value=error.get("input")
-        ))
+        details.append(
+            ErrorDetail(
+                field=field_path or "body",
+                message=error["msg"],
+                code=error["type"],
+                value=error.get("input"),
+            )
+        )
 
     from app.common.utils.logging import get_trace_id
+
     logger.warning(
         f"Validation error: {len(details)} field(s) failed",
-        extra={"path": request.url.path, "details": details}
+        extra={"path": request.url.path, "details": details},
     )
 
     return create_error_response(
@@ -134,7 +120,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         code="VALIDATION_ERROR",
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         request=request,
-        details=details
+        details=details,
     )
 
 
@@ -142,15 +128,10 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
     """Handle unexpected exceptions - safety net"""
     # Log full error in development, generic in production (trace ID automatically included)
     if settings.debug:
-        logger.exception(
-            f"Unexpected error: {exc}",
-            exc_info=exc
-        )
+        logger.exception(f"Unexpected error: {exc}", exc_info=exc)
         message = str(exc)
     else:
-        logger.error(
-            f"Unexpected error: {type(exc).__name__}"
-        )
+        logger.error(f"Unexpected error: {type(exc).__name__}")
         message = "An unexpected error occurred"
 
     return create_error_response(
@@ -158,6 +139,5 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
         message=message,
         code="INTERNAL_SERVER_ERROR",
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        request=request
+        request=request,
     )
-

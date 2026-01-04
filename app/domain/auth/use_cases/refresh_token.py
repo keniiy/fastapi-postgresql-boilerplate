@@ -4,11 +4,7 @@ Refresh token use case.
 from typing import Dict
 from app.domain.user.types.repository import IUserRepository
 from app.common.exceptions import UnauthorizedError
-from app.infrastructure.security.jwt import (
-    decode_token,
-    create_access_token,
-    create_refresh_token
-)
+from app.infrastructure.security.jwt import decode_token, create_access_token, create_refresh_token
 
 
 class RefreshTokenUseCase:
@@ -59,6 +55,5 @@ class RefreshTokenUseCase:
         return {
             "access_token": new_access_token,
             "refresh_token": new_refresh_token,
-            "token_type": "bearer"
+            "token_type": "bearer",
         }
-
