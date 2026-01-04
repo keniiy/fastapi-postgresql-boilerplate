@@ -1,0 +1,17 @@
+# Code owners for automatic PR assignment
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owners
+* @keniiy
+
+# Domain-specific owners
+/app/domain/ @keniiy
+/app/infrastructure/ @keniiy
+/app/presentation/ @keniiy
+
+# CI/CD and configuration
+/.github/ @keniiy
+/pyproject.toml @keniiy
+/Dockerfile @keniiy
+/docker-compose*.yml @keniiy
+

@@ -1,0 +1,27 @@
+# Celery worker Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install poetry
+RUN pip install poetry==1.8.0
+
+# Copy dependency files
+COPY pyproject.toml poetry.lock* ./
+
+# Configure poetry and install dependencies
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --only main
+
+# Copy application code
+COPY ./app ./app
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 appgroup \
+    && adduser --system --uid 1001 --gid 1001 appuser
+
+USER appuser
+
+# Default command (overridden in docker-compose)
+CMD ["celery", "-A", "app.infrastructure.tasks.celery_app", "worker", "--loglevel=info"]
+
