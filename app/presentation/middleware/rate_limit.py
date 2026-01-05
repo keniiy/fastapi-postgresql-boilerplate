@@ -17,9 +17,9 @@ settings = get_settings()
 # Initialize rate limiter with global default
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=[settings.rate_limit_default]
-    if settings.rate_limit_enabled
-    else [],  # Global default
+    default_limits=(
+        [settings.rate_limit_default] if settings.rate_limit_enabled else []
+    ),  # Global default
     storage_uri=settings.rate_limit_storage,  # Use Redis in production: "redis://localhost:6379"
     headers_enabled=True,  # Add rate limit headers to responses
 )
