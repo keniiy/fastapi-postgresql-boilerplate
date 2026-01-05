@@ -3,7 +3,7 @@ User repository - database operations for User model.
 Implements data access layer for users.
 """
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common.utils.pagination import PaginatedResponse, PaginationParams
@@ -47,13 +47,35 @@ class UserRepository(BaseRepository[User]):
         return await self.update(db, user)
 
     async def get_all_active(
-        self, db: AsyncSession, skip: int = 0, limit: int | None = None
+        self,
+        db: AsyncSession,
+        skip: int = 0,
+        limit: int | None = None,
+        search: str | None = None,
     ) -> list[User]:
         """
-        Get all active users.
+        Get all active users with optional search.
         Can be used with or without pagination (limit=None returns all).
+
+        Args:
+            db: Database session
+            skip: Number of records to skip (for pagination)
+            limit: Maximum number of records to return
+            search: Optional search term to filter by email or phone (case-insensitive partial match)
         """
-        query = select(User).where(User.is_active).offset(skip)
+        query = select(User).where(User.is_active)
+
+        # Add search filter if provided
+        if search:
+            search_pattern = f"%{search}%"
+            query = query.where(
+                or_(
+                    User.email.ilike(search_pattern),
+                    User.phone.ilike(search_pattern),
+                )
+            )
+
+        query = query.offset(skip)
         if limit is not None:
             query = query.limit(limit)
 
@@ -61,17 +83,27 @@ class UserRepository(BaseRepository[User]):
         return result.scalars().all()
 
     async def get_all_active_paginated(
-        self, db: AsyncSession, pagination: PaginationParams
+        self,
+        db: AsyncSession,
+        pagination: PaginationParams,
+        search: str | None = None,
     ) -> PaginatedResponse[User]:
         """
         Get all active users with pagination and metadata.
         Returns proper pagination response for frontend.
+
+        Args:
+            db: Database session
+            pagination: Pagination parameters
+            search: Optional search term to filter by email or phone (case-insensitive partial match)
         """
-        # Get total count of active users
-        total = await self._count_active(db)
+        # Get total count of active users (with search if provided)
+        total = await self._count_active(db, search=search)
 
         # Get paginated items
-        items = await self.get_all_active(db, skip=pagination.skip, limit=pagination.limit)
+        items = await self.get_all_active(
+            db, skip=pagination.skip, limit=pagination.limit, search=search
+        )
 
         # Create metadata
         from app.common.utils.pagination import PaginationMeta
@@ -83,17 +115,27 @@ class UserRepository(BaseRepository[User]):
         return PaginatedResponse(items=items, meta=meta)
 
     async def get_all_active_with_count(
-        self, db: AsyncSession, skip: int = 0, limit: int | None = None
+        self,
+        db: AsyncSession,
+        skip: int = 0,
+        limit: int | None = None,
+        search: str | None = None,
     ) -> tuple[list[User], int]:
         """
         Get all active users with total count.
         Useful when you need both data and count in one call.
+
+        Args:
+            db: Database session
+            skip: Number of records to skip (for pagination)
+            limit: Maximum number of records to return
+            search: Optional search term to filter by email or phone (case-insensitive partial match)
         """
-        # Get total count
-        total = await self._count_active(db)
+        # Get total count (with search if provided)
+        total = await self._count_active(db, search=search)
 
         # Get items
-        items = await self.get_all_active(db, skip=skip, limit=limit)
+        items = await self.get_all_active(db, skip=skip, limit=limit, search=search)
 
         return items, total
 
@@ -148,9 +190,21 @@ class UserRepository(BaseRepository[User]):
         return items, total
 
     # Private helper methods
-    async def _count_active(self, db: AsyncSession) -> int:
-        """Count active users"""
-        result = await db.execute(select(func.count()).select_from(User).where(User.is_active))
+    async def _count_active(self, db: AsyncSession, search: str | None = None) -> int:
+        """Count active users, optionally filtered by search term"""
+        query = select(func.count()).select_from(User).where(User.is_active)
+
+        # Add search filter if provided
+        if search:
+            search_pattern = f"%{search}%"
+            query = query.where(
+                or_(
+                    User.email.ilike(search_pattern),
+                    User.phone.ilike(search_pattern),
+                )
+            )
+
+        result = await db.execute(query)
         return result.scalar() or 0
 
     async def _count_by_role(self, db: AsyncSession, role: str) -> int:
