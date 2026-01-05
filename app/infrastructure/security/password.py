@@ -2,6 +2,7 @@
 Password hashing utilities using Argon2.
 Argon2 is the winner of the Password Hashing Competition (PHC).
 """
+
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerifyMismatchError
 

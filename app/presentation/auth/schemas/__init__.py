@@ -1,6 +1,7 @@
 """
 Authentication schemas - request and response models.
 """
+
 from .requests import (
     ChangePasswordRequest,
     LoginRequest,
@@ -8,9 +9,7 @@ from .requests import (
     RegisterRequest,
     UpdateProfileRequest,
 )
-from .responses import (
-    TokenResponse,
-)
+from .responses import TokenResponse
 
 __all__ = [
     "RegisterRequest",

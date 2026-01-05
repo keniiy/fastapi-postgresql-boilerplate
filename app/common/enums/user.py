@@ -1,6 +1,7 @@
 """
 User-related enums.
 """
+
 import enum
 
 

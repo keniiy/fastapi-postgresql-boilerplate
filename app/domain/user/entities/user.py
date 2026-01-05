@@ -2,9 +2,9 @@
 User domain entity - pure business object.
 No database dependencies, just business logic.
 """
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from app.common.enums.user import UserRole
 
@@ -16,13 +16,13 @@ class User:
     Represents a user in the business domain.
     """
 
-    id: Optional[int]
-    email: Optional[str]
-    phone: Optional[str]
+    id: int | None
+    email: str | None
+    phone: str | None
     role: UserRole
     is_active: bool
     created_at: datetime
-    updated_at: Optional[datetime]
+    updated_at: datetime | None
 
     def can_create_course(self) -> bool:
         """Business rule: only instructors and admins can create courses"""

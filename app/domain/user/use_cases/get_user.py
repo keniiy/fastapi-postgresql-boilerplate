@@ -1,7 +1,6 @@
 """
 Get user use cases.
 """
-from typing import Optional
 
 from app.domain.user.entities.user import User
 from app.domain.user.types.repository import IUserRepository
@@ -13,7 +12,7 @@ class GetUserByIdUseCase:
     def __init__(self, repository: IUserRepository):
         self.repository = repository
 
-    async def execute(self, user_id: int) -> Optional[User]:
+    async def execute(self, user_id: int) -> User | None:
         """Get user by ID"""
         return await self.repository.get_by_id(user_id)
 
@@ -24,7 +23,7 @@ class GetUserByEmailUseCase:
     def __init__(self, repository: IUserRepository):
         self.repository = repository
 
-    async def execute(self, email: str) -> Optional[User]:
+    async def execute(self, email: str) -> User | None:
         """Get user by email"""
         return await self.repository.get_by_email(email)
 
@@ -35,6 +34,6 @@ class GetUserByPhoneUseCase:
     def __init__(self, repository: IUserRepository):
         self.repository = repository
 
-    async def execute(self, phone: str) -> Optional[User]:
+    async def execute(self, phone: str) -> User | None:
         """Get user by phone"""
         return await self.repository.get_by_phone(phone)

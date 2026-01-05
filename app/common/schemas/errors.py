@@ -1,8 +1,9 @@
 """
 Structured error response schemas.
 """
-from datetime import datetime, timezone
-from typing import Any, List, Optional
+
+from datetime import UTC, datetime
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -10,10 +11,10 @@ from pydantic import BaseModel, Field
 class ErrorDetail(BaseModel):
     """Single error detail"""
 
-    field: Optional[str] = None
+    field: str | None = None
     message: str
-    code: Optional[str] = None
-    value: Optional[Any] = None
+    code: str | None = None
+    value: Any | None = None
 
 
 class ErrorResponse(BaseModel):
@@ -22,10 +23,10 @@ class ErrorResponse(BaseModel):
     error: str = Field(..., description="Error type/class name")
     message: str = Field(..., description="Human-readable error message")
     code: str = Field(..., description="Error code for programmatic handling")
-    details: Optional[List[ErrorDetail]] = Field(None, description="Detailed error information")
-    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    path: Optional[str] = Field(None, description="Request path")
-    trace_id: Optional[str] = Field(None, description="Request trace ID for observability")
+    details: list[ErrorDetail] | None = Field(None, description="Detailed error information")
+    timestamp: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
+    path: str | None = Field(None, description="Request path")
+    trace_id: str | None = Field(None, description="Request trace ID for observability")
 
     model_config = {
         "json_schema_extra": {

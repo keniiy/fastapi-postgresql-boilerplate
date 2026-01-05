@@ -1,5 +1,4 @@
 from functools import lru_cache
-from typing import List, Optional, Union
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -22,7 +21,7 @@ class Settings(BaseSettings):
 
     @field_validator("cors_origins", mode="before")
     @classmethod
-    def parse_cors_origins(cls, v) -> Union[str, List[str]]:
+    def parse_cors_origins(cls, v) -> str | list[str]:
         """
         Parse CORS origins from environment variable.
         Accepts:
@@ -62,7 +61,7 @@ class Settings(BaseSettings):
     refresh_token_expire_days: int = 7
 
     # CORS
-    cors_origins: Union[str, List[str]] = "*"  # Comma-separated string or JSON array
+    cors_origins: str | list[str] = "*"  # Comma-separated string or JSON array
 
     # Redis
     redis_url: str = "redis://localhost:6379/0"
@@ -90,6 +89,6 @@ class Settings(BaseSettings):
     )
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     return Settings()

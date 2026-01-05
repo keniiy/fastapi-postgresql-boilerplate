@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-from typing import List
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -105,7 +104,7 @@ app = FastAPI(
 
 
 # Add CORS middleware
-def get_cors_origins() -> List[str]:
+def get_cors_origins() -> list[str]:
     """
     Get CORS allowed origins based on environment.
     - Development: Allow all origins ("*")

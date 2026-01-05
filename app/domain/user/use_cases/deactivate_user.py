@@ -1,6 +1,7 @@
 """
 Deactivate user use case.
 """
+
 from app.domain.user.entities.user import User
 from app.domain.user.types.repository import IUserRepository
 

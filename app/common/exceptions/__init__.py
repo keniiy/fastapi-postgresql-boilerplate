@@ -1,13 +1,14 @@
 """
 Comprehensive domain exceptions with error codes.
 """
-from typing import Any, Dict, Optional
+
+from typing import Any
 
 
 class DomainException(Exception):
     """Base exception for all domain errors"""
 
-    def __init__(self, message: str, code: str = None, details: Optional[Dict[str, Any]] = None):
+    def __init__(self, message: str, code: str = None, details: dict[str, Any] | None = None):
         self.message = message
         self.code = code or self._get_default_code()
         self.details = details or {}

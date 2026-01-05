@@ -1,8 +1,9 @@
 """
 Base task class with common functionality.
 """
+
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from celery import Task
 

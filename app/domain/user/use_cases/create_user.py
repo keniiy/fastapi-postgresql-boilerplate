@@ -1,8 +1,8 @@
 """
 Create user use case.
 """
+
 from datetime import datetime
-from typing import Optional
 
 from app.common.enums.user import UserRole
 from app.common.exceptions import ConflictError, ValidationError
@@ -18,8 +18,8 @@ class CreateUserUseCase:
 
     async def execute(
         self,
-        email: Optional[str] = None,
-        phone: Optional[str] = None,
+        email: str | None = None,
+        phone: str | None = None,
         password_hash: str = "",
         role: UserRole = UserRole.STUDENT,
     ) -> User:

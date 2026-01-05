@@ -1,6 +1,7 @@
 """
 Course-related enums.
 """
+
 import enum
 
 

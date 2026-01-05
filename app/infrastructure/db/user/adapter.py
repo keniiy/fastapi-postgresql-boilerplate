@@ -3,8 +3,8 @@ Repository adapter - bridges infrastructure repository with domain interface.
 Converts between SQLAlchemy models and domain entities.
 This is infrastructure concern - adapting infrastructure to domain.
 """
+
 from datetime import datetime
-from typing import Optional, Tuple
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,7 +22,7 @@ class UserRepositoryAdapter(IUserRepository):
         self.db = db
         self._repo = InfraUserRepository()
 
-    def _model_to_entity(self, model: UserModel) -> Optional[User]:
+    def _model_to_entity(self, model: UserModel) -> User | None:
         """Convert SQLAlchemy model to domain entity"""
         if not model:
             return None
@@ -50,29 +50,29 @@ class UserRepositoryAdapter(IUserRepository):
         created = await self._repo.create(self.db, model)
         return self._model_to_entity(created)
 
-    async def get_by_id(self, user_id: int) -> Optional[User]:
+    async def get_by_id(self, user_id: int) -> User | None:
         """Get user by ID"""
         model = await self._repo.get_by_id(self.db, user_id)
         return self._model_to_entity(model)
 
-    async def get_by_email(self, email: str) -> Optional[User]:
+    async def get_by_email(self, email: str) -> User | None:
         """Get user by email"""
         model = await self._repo.get_by_email(self.db, email)
         return self._model_to_entity(model)
 
-    async def get_by_phone(self, phone: str) -> Optional[User]:
+    async def get_by_phone(self, phone: str) -> User | None:
         """Get user by phone"""
         model = await self._repo.get_by_phone(self.db, phone)
         return self._model_to_entity(model)
 
-    async def get_by_email_with_password(self, email: str) -> Optional[Tuple[User, str]]:
+    async def get_by_email_with_password(self, email: str) -> tuple[User, str] | None:
         """Get user by email with password hash for authentication"""
         model = await self._repo.get_by_email(self.db, email)
         if not model:
             return None
         return self._model_to_entity(model), model.password_hash
 
-    async def get_by_phone_with_password(self, phone: str) -> Optional[Tuple[User, str]]:
+    async def get_by_phone_with_password(self, phone: str) -> tuple[User, str] | None:
         """Get user by phone with password hash for authentication"""
         model = await self._repo.get_by_phone(self.db, phone)
         if not model:

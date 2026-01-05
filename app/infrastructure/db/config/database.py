@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
@@ -67,7 +65,7 @@ def get_database_type() -> str:
     return "Unknown"
 
 
-async def check_database_connection() -> Tuple[bool, str]:
+async def check_database_connection() -> tuple[bool, str]:
     """Check database connection and return status"""
     from sqlalchemy import text
 

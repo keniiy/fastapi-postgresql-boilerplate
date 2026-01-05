@@ -1,7 +1,6 @@
 """
 Register user use case.
 """
-from typing import Optional
 
 from app.common.enums.user import UserRole
 from app.common.exceptions import ValidationError
@@ -18,7 +17,7 @@ class RegisterUseCase:
         self.create_user = CreateUserUseCase(user_repository)
 
     async def execute(
-        self, email: Optional[str] = None, phone: Optional[str] = None, password: str = ""
+        self, email: str | None = None, phone: str | None = None, password: str = ""
     ) -> User:
         """
         Register a new user.

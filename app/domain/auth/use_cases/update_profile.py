@@ -1,7 +1,6 @@
 """
 Update profile use case.
 """
-from typing import Optional
 
 from app.common.exceptions import NotFoundError
 from app.domain.user.entities.user import User
@@ -18,7 +17,7 @@ class UpdateProfileUseCase:
         self.update_user = UpdateUserUseCase(user_repository)
 
     async def execute(
-        self, user_id: int, email: Optional[str] = None, phone: Optional[str] = None
+        self, user_id: int, email: str | None = None, phone: str | None = None
     ) -> User:
         """
         Update user profile.

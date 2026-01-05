@@ -1,6 +1,7 @@
 """
 Update user use case.
 """
+
 from datetime import datetime
 
 from app.domain.user.entities.user import User

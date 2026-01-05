@@ -2,7 +2,6 @@
 Authentication request schemas.
 All incoming request models for auth endpoints.
 """
-from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field, model_validator
 
@@ -10,8 +9,8 @@ from pydantic import BaseModel, EmailStr, Field, model_validator
 class RegisterRequest(BaseModel):
     """User registration request"""
 
-    email: Optional[EmailStr] = None
-    phone: Optional[str] = Field(None, pattern=r"^\+?[1-9]\d{1,14}$")
+    email: EmailStr | None = None
+    phone: str | None = Field(None, pattern=r"^\+?[1-9]\d{1,14}$")
     password: str = Field(
         ..., min_length=8, max_length=128, description="Password must be 8-128 characters"
     )
@@ -36,8 +35,8 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     """User login request"""
 
-    email: Optional[EmailStr] = None
-    phone: Optional[str] = Field(None, pattern=r"^\+?[1-9]\d{1,14}$")
+    email: EmailStr | None = None
+    phone: str | None = Field(None, pattern=r"^\+?[1-9]\d{1,14}$")
     password: str = Field(..., min_length=1)
 
     @model_validator(mode="after")
@@ -84,8 +83,8 @@ class ChangePasswordRequest(BaseModel):
 class UpdateProfileRequest(BaseModel):
     """Update user profile request"""
 
-    email: Optional[EmailStr] = None
-    phone: Optional[str] = Field(None, pattern=r"^\+?[1-9]\d{1,14}$")
+    email: EmailStr | None = None
+    phone: str | None = Field(None, pattern=r"^\+?[1-9]\d{1,14}$")
 
     @model_validator(mode="after")
     def validate_at_least_one_field(self):

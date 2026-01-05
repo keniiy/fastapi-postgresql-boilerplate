@@ -2,8 +2,9 @@
 Abstract base repository with common CRUD operations.
 All repositories should inherit from this.
 """
+
 from abc import ABC
-from typing import Generic, List, Optional, Tuple, TypeVar
+from typing import Generic, TypeVar
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -51,7 +52,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         await db.refresh(obj)
         return obj
 
-    async def get_by_id(self, db: AsyncSession, id: int) -> Optional[ModelType]:
+    async def get_by_id(self, db: AsyncSession, id: int) -> ModelType | None:
         """
         Get a record by its ID.
 
@@ -65,7 +66,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         result = await db.execute(select(self.model).where(self.model.id == id))
         return result.scalar_one_or_none()
 
-    async def get_all(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[ModelType]:
+    async def get_all(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> list[ModelType]:
         """
         Get all records with pagination.
 
@@ -109,8 +110,8 @@ class BaseRepository(ABC, Generic[ModelType]):
         return PaginatedResponse(items=items, meta=meta)
 
     async def get_all_with_count(
-        self, db: AsyncSession, skip: int = 0, limit: Optional[int] = None
-    ) -> Tuple[List[ModelType], int]:
+        self, db: AsyncSession, skip: int = 0, limit: int | None = None
+    ) -> tuple[list[ModelType], int]:
         """
         Get all records with total count.
         Useful when you need both data and count in one call.

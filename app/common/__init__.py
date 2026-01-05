@@ -1,6 +1,7 @@
 """
 Common utilities and shared code across the application.
 """
+
 from .enums import CourseStatus, UserRole
 from .exceptions import (
     ConflictError,

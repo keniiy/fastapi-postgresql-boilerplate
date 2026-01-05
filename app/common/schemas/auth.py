@@ -1,8 +1,8 @@
 """
 Reusable authentication response schemas.
 """
+
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -11,12 +11,12 @@ class UserResponse(BaseModel):
     """Reusable user profile response"""
 
     id: int
-    email: Optional[str] = None
-    phone: Optional[str] = None
+    email: str | None = None
+    phone: str | None = None
     role: str
     is_active: bool
     created_at: datetime
-    updated_at: Optional[datetime] = None
+    updated_at: datetime | None = None
 
     model_config = ConfigDict(
         from_attributes=True,

@@ -1,6 +1,7 @@
 """
 User database model - SQLAlchemy model for users table.
 """
+
 from sqlalchemy import Boolean, Column, Enum, String
 
 from app.common import UserRole

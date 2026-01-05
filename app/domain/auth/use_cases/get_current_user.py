@@ -1,6 +1,7 @@
 """
 Get current user use case.
 """
+
 from app.common.exceptions import NotFoundError
 from app.domain.user.entities.user import User
 from app.domain.user.types.repository import IUserRepository

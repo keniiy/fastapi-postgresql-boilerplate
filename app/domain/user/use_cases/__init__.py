@@ -2,6 +2,7 @@
 User use cases.
 All business operations for user domain.
 """
+
 from .create_user import CreateUserUseCase
 from .deactivate_user import DeactivateUserUseCase
 from .get_user import GetUserByEmailUseCase, GetUserByIdUseCase, GetUserByPhoneUseCase

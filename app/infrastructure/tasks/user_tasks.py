@@ -1,8 +1,9 @@
 """
 User-related background tasks.
 """
+
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.infrastructure.tasks.base import BaseTask
 from app.infrastructure.tasks.celery_app import celery_app
@@ -39,7 +40,7 @@ def cleanup_expired_tokens(self) -> dict:
     return {
         "status": "completed",
         "deleted_count": deleted_count,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 
@@ -97,7 +98,7 @@ def deactivate_user_data(self, user_id: int) -> dict:
     return {
         "status": "completed",
         "user_id": user_id,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 
@@ -130,5 +131,5 @@ def export_user_data(self, user_id: int, export_format: str = "json") -> dict:
         "user_id": user_id,
         "format": export_format,
         "file_path": f"/exports/user_{user_id}.{export_format}",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }

@@ -2,11 +2,13 @@
 Cache service for application-level caching operations.
 Provides a high-level API for caching with automatic serialization.
 """
+
 import json
 import logging
+from collections.abc import Callable
 from datetime import timedelta
 from functools import wraps
-from typing import Any, Callable, Optional, TypeVar
+from typing import Any, TypeVar
 
 from redis.asyncio import Redis
 
@@ -23,12 +25,12 @@ class CacheService:
     Gracefully handles Redis unavailability.
     """
 
-    def __init__(self, redis: Optional[Redis] = None, prefix: str = "app"):
+    def __init__(self, redis: Redis | None = None, prefix: str = "app"):
         self._redis = redis
         self._prefix = prefix
 
     @property
-    def redis(self) -> Optional[Redis]:
+    def redis(self) -> Redis | None:
         """Get Redis client (from injection or global)"""
         return self._redis or redis_client.client
 
@@ -36,7 +38,7 @@ class CacheService:
         """Create prefixed cache key"""
         return f"{self._prefix}:{key}"
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         """
         Get value from cache.
         Returns None if key doesn't exist or Redis unavailable.
@@ -58,8 +60,8 @@ class CacheService:
         self,
         key: str,
         value: Any,
-        ttl: Optional[int] = None,
-        ttl_timedelta: Optional[timedelta] = None,
+        ttl: int | None = None,
+        ttl_timedelta: timedelta | None = None,
     ) -> bool:
         """
         Set value in cache with optional TTL.
@@ -142,7 +144,7 @@ class CacheService:
             logger.warning(f"Cache exists error for {key}: {e}")
             return False
 
-    async def increment(self, key: str, amount: int = 1) -> Optional[int]:
+    async def increment(self, key: str, amount: int = 1) -> int | None:
         """Increment a counter in cache"""
         if not self.redis:
             return None
@@ -158,8 +160,8 @@ class CacheService:
         self,
         key: str,
         factory: Callable[[], Any],
-        ttl: Optional[int] = None,
-    ) -> Optional[Any]:
+        ttl: int | None = None,
+    ) -> Any | None:
         """
         Get value from cache, or compute and cache it.
 
@@ -193,7 +195,7 @@ class CacheService:
 
 
 # Global cache service instance
-_cache_service: Optional[CacheService] = None
+_cache_service: CacheService | None = None
 
 
 def get_cache_service() -> CacheService:
@@ -207,7 +209,7 @@ def get_cache_service() -> CacheService:
 def cached(
     key_prefix: str,
     ttl: int = 300,
-    key_builder: Optional[Callable[..., str]] = None,
+    key_builder: Callable[..., str] | None = None,
 ):
     """
     Decorator for caching function results.

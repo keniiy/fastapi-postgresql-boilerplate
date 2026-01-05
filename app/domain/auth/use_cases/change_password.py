@@ -1,6 +1,7 @@
 """
 Change password use case.
 """
+
 from app.common.exceptions import NotFoundError, UnauthorizedError, ValidationError
 from app.domain.user.types.repository import IUserRepository
 from app.infrastructure.security.password import hash_password, verify_password

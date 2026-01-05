@@ -4,6 +4,7 @@ Controllers are one-liners that call auth use cases.
 Exceptions are handled globally by exception handlers.
 Rate limiting is handled by global middleware.
 """
+
 from fastapi import APIRouter, Depends, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 

@@ -2,6 +2,7 @@
 Auth domain module.
 Contains auth-specific use cases.
 """
+
 from .use_cases.change_password import ChangePasswordUseCase
 from .use_cases.deactivate_account import DeactivateAccountUseCase
 from .use_cases.get_current_user import GetCurrentUserUseCase

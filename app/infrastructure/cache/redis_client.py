@@ -1,9 +1,9 @@
 """
 Redis client configuration and connection management.
 """
+
 import logging
 from contextlib import asynccontextmanager
-from typing import Optional
 
 import redis.asyncio as redis
 from redis.asyncio import Redis
@@ -20,10 +20,10 @@ class RedisClient:
     Provides async context manager for safe connection handling.
     """
 
-    def __init__(self, url: Optional[str] = None):
+    def __init__(self, url: str | None = None):
         self.url = url or settings.redis_url
-        self._client: Optional[Redis] = None
-        self._pool: Optional[redis.ConnectionPool] = None
+        self._client: Redis | None = None
+        self._pool: redis.ConnectionPool | None = None
 
     async def connect(self) -> None:
         """Initialize Redis connection pool"""
@@ -57,7 +57,7 @@ class RedisClient:
         logger.info("Redis disconnected")
 
     @property
-    def client(self) -> Optional[Redis]:
+    def client(self) -> Redis | None:
         """Get the Redis client instance"""
         return self._client
 
@@ -89,7 +89,7 @@ class RedisClient:
 redis_client = RedisClient()
 
 
-async def get_redis() -> Optional[Redis]:
+async def get_redis() -> Redis | None:
     """
     Dependency injection for Redis client.
     Returns None if Redis is not available (graceful degradation).

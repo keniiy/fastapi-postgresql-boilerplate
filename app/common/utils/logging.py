@@ -1,23 +1,23 @@
 """
 Structured logging configuration with trace ID support.
 """
+
 import logging
 import sys
 from contextvars import ContextVar
-from typing import Any, Dict, Optional
 
 from pythonjsonlogger import jsonlogger
 
 # Context variable for trace ID (accessible globally)
-trace_id_var: ContextVar[Optional[str]] = ContextVar("trace_id", default=None)
+trace_id_var: ContextVar[str | None] = ContextVar("trace_id", default=None)
 
 
-def get_trace_id() -> Optional[str]:
+def get_trace_id() -> str | None:
     """Get current trace ID from context"""
     return trace_id_var.get()
 
 
-def set_trace_id(trace_id: Optional[str]) -> None:
+def set_trace_id(trace_id: str | None) -> None:
     """Set trace ID in context"""
     trace_id_var.set(trace_id)
 

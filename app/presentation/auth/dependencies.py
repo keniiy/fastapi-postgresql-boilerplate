@@ -2,6 +2,7 @@
 Dependencies for auth routes.
 Provides dependency injection for auth use cases.
 """
+
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession

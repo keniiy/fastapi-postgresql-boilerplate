@@ -1,7 +1,6 @@
 """
 Login user use case.
 """
-from typing import Dict, Optional, Tuple
 
 from app.common.exceptions import UnauthorizedError, ValidationError
 from app.domain.user.entities.user import User
@@ -17,8 +16,8 @@ class LoginUseCase:
         self.repository = user_repository
 
     async def execute(
-        self, email: Optional[str] = None, phone: Optional[str] = None, password: str = ""
-    ) -> Tuple[User, Dict[str, str]]:
+        self, email: str | None = None, phone: str | None = None, password: str = ""
+    ) -> tuple[User, dict[str, str]]:
         """
         Login user and return user + tokens.
 

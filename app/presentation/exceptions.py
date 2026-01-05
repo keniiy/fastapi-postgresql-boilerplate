@@ -1,8 +1,8 @@
 """
 Comprehensive exception handlers for all error types.
 """
+
 import logging
-from typing import Dict, Type
 
 from fastapi import Request, status
 from fastapi.exceptions import RequestValidationError
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 settings = get_settings()
 
 # Map domain exceptions to HTTP status codes
-EXCEPTION_STATUS_MAP: Dict[Type[DomainException], int] = {
+EXCEPTION_STATUS_MAP: dict[type[DomainException], int] = {
     ValidationError: status.HTTP_400_BAD_REQUEST,
     NotFoundError: status.HTTP_404_NOT_FOUND,
     UnauthorizedError: status.HTTP_401_UNAUTHORIZED,
@@ -75,7 +75,6 @@ async def domain_exception_handler(request: Request, exc: DomainException) -> JS
             details.append(ErrorDetail(field=key, message=str(value), code=exc.code))
 
     # Log error with trace ID (automatically included via logging filter)
-    from app.common.utils.logging import get_trace_id
 
     logger.warning(
         f"Domain exception: {exc.__class__.__name__} - {exc.message}",
@@ -107,8 +106,6 @@ async def validation_exception_handler(
                 value=error.get("input"),
             )
         )
-
-    from app.common.utils.logging import get_trace_id
 
     logger.warning(
         f"Validation error: {len(details)} field(s) failed",

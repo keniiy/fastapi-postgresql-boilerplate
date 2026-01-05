@@ -2,6 +2,7 @@
 Base model for all SQLAlchemy models.
 All database models should inherit from this Base.
 """
+
 from sqlalchemy import Column, DateTime, Integer
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
