@@ -3,20 +3,21 @@ Dependencies for auth routes.
 Provides dependency injection for auth use cases.
 """
 from fastapi import Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.common.exceptions import UnauthorizedError
+from app.domain.auth.use_cases.change_password import ChangePasswordUseCase
+from app.domain.auth.use_cases.deactivate_account import DeactivateAccountUseCase
+from app.domain.auth.use_cases.get_current_user import GetCurrentUserUseCase
+from app.domain.auth.use_cases.login import LoginUseCase
+from app.domain.auth.use_cases.logout import LogoutUseCase
+from app.domain.auth.use_cases.refresh_token import RefreshTokenUseCase
+from app.domain.auth.use_cases.register import RegisterUseCase
+from app.domain.auth.use_cases.update_profile import UpdateProfileUseCase
 from app.infrastructure.db.config import get_db
 from app.infrastructure.db.user.adapter import UserRepositoryAdapter
 from app.infrastructure.security.jwt import get_user_id_from_token
-from app.common.exceptions import UnauthorizedError
-from app.domain.auth.use_cases.register import RegisterUseCase
-from app.domain.auth.use_cases.login import LoginUseCase
-from app.domain.auth.use_cases.refresh_token import RefreshTokenUseCase
-from app.domain.auth.use_cases.get_current_user import GetCurrentUserUseCase
-from app.domain.auth.use_cases.update_profile import UpdateProfileUseCase
-from app.domain.auth.use_cases.change_password import ChangePasswordUseCase
-from app.domain.auth.use_cases.deactivate_account import DeactivateAccountUseCase
-from app.domain.auth.use_cases.logout import LogoutUseCase
 
 security = HTTPBearer()
 

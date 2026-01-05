@@ -2,12 +2,14 @@
 User repository - database operations for User model.
 Implements data access layer for users.
 """
+from typing import List, Optional, Tuple
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-from typing import Optional, Tuple, List
+
+from app.common.utils.pagination import PaginatedResponse, PaginationParams
 from app.infrastructure.db.base.base_repository import BaseRepository
 from app.infrastructure.db.user.model import User
-from app.common.utils.pagination import PaginationParams, PaginatedResponse
 
 
 class UserRepository(BaseRepository[User]):

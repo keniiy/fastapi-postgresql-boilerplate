@@ -2,21 +2,22 @@
 Comprehensive exception handlers for all error types.
 """
 import logging
-from fastapi import Request, status
-from fastapi.responses import JSONResponse
-from fastapi.exceptions import RequestValidationError
 from typing import Dict, Type
 
+from fastapi import Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+
 from app.common.exceptions import (
+    ConflictError,
     DomainException,
-    ValidationError,
+    ForbiddenError,
+    InternalServerError,
     NotFoundError,
     UnauthorizedError,
-    ForbiddenError,
-    ConflictError,
-    InternalServerError,
+    ValidationError,
 )
-from app.common.schemas.errors import ErrorResponse, ErrorDetail
+from app.common.schemas.errors import ErrorDetail, ErrorResponse
 from app.core.config import get_settings
 
 logger = logging.getLogger(__name__)

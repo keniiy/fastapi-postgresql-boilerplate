@@ -2,11 +2,12 @@
 Register user use case.
 """
 from typing import Optional
-from app.domain.user.use_cases.create_user import CreateUserUseCase
-from app.domain.user.types.repository import IUserRepository
-from app.domain.user.entities.user import User
+
 from app.common.enums.user import UserRole
 from app.common.exceptions import ValidationError
+from app.domain.user.entities.user import User
+from app.domain.user.types.repository import IUserRepository
+from app.domain.user.use_cases.create_user import CreateUserUseCase
 from app.infrastructure.security.password import hash_password
 
 

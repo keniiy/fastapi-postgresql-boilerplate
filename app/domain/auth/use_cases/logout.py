@@ -5,8 +5,8 @@ Note: In a stateless JWT architecture, logout is typically handled client-side
 by removing the token. If token blacklisting is required, implement a token
 blacklist service (e.g., Redis) and add tokens to it here.
 """
-from app.infrastructure.security.jwt import decode_token
 from app.common.exceptions import UnauthorizedError
+from app.infrastructure.security.jwt import decode_token
 
 
 class LogoutUseCase:

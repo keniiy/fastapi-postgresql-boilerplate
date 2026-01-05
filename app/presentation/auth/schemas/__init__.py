@@ -2,10 +2,10 @@
 Authentication schemas - request and response models.
 """
 from .requests import (
-    RegisterRequest,
+    ChangePasswordRequest,
     LoginRequest,
     RefreshTokenRequest,
-    ChangePasswordRequest,
+    RegisterRequest,
     UpdateProfileRequest,
 )
 from .responses import (

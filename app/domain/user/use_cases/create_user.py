@@ -1,12 +1,13 @@
 """
 Create user use case.
 """
+from datetime import datetime
 from typing import Optional
+
+from app.common.enums.user import UserRole
+from app.common.exceptions import ConflictError, ValidationError
 from app.domain.user.entities.user import User
 from app.domain.user.types.repository import IUserRepository
-from app.common.enums.user import UserRole
-from app.common.exceptions import ValidationError, ConflictError
-from datetime import datetime
 
 
 class CreateUserUseCase:

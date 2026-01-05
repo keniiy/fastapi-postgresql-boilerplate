@@ -4,11 +4,13 @@ Generates unique trace IDs for each request and attaches them to request state a
 """
 import uuid
 from typing import Optional
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-from app.common.utils.logging import set_trace_id, get_trace_id as get_trace_id_from_context
+from app.common.utils.logging import get_trace_id as get_trace_id_from_context
+from app.common.utils.logging import set_trace_id
 
 
 class TraceIDMiddleware(BaseHTTPMiddleware):

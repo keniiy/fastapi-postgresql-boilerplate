@@ -5,6 +5,7 @@ Implementation is in infrastructure layer.
 """
 from abc import ABC, abstractmethod
 from typing import Optional, Tuple
+
 from app.domain.user.entities.user import User
 
 

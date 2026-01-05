@@ -1,7 +1,9 @@
 from typing import Tuple
-from app.core.config import get_settings
+
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
+
+from app.core.config import get_settings
 from app.infrastructure.db.base.base_model import Base
 
 settings = get_settings()

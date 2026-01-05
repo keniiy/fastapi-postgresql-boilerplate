@@ -2,8 +2,10 @@
 JWT token utilities for encoding and decoding tokens.
 """
 from datetime import datetime, timedelta, timezone
-from typing import Optional, Dict
+from typing import Dict, Optional
+
 import jwt
+
 from app.core.config import get_settings
 
 settings = get_settings()

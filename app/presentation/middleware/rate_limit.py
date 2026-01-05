@@ -2,13 +2,14 @@
 Rate limiting middleware using slowapi.
 Global rate limiting applied to all endpoints with per-endpoint overrides.
 """
+from fastapi import status
 from slowapi import Limiter
-from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-from fastapi import status
+
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -56,10 +57,11 @@ rate_limit = limiter.limit
 # Rate limit exception handler
 async def rate_limit_exception_handler(request: Request, exc: RateLimitExceeded):
     """Handle rate limit exceeded errors"""
-    from app.presentation.middleware.trace_id import get_trace_id
-    from app.common.schemas.errors import ErrorResponse
-    from fastapi.responses import JSONResponse
     from fastapi import status
+    from fastapi.responses import JSONResponse
+
+    from app.common.schemas.errors import ErrorResponse
+    from app.presentation.middleware.trace_id import get_trace_id
 
     trace_id = get_trace_id(request)
     error_response = ErrorResponse(

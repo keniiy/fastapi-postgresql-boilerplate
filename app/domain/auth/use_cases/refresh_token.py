@@ -2,9 +2,10 @@
 Refresh token use case.
 """
 from typing import Dict
-from app.domain.user.types.repository import IUserRepository
+
 from app.common.exceptions import UnauthorizedError
-from app.infrastructure.security.jwt import decode_token, create_access_token, create_refresh_token
+from app.domain.user.types.repository import IUserRepository
+from app.infrastructure.security.jwt import create_access_token, create_refresh_token, decode_token
 
 
 class RefreshTokenUseCase:

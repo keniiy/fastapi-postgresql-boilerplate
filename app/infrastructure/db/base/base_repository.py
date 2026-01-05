@@ -3,11 +3,13 @@ Abstract base repository with common CRUD operations.
 All repositories should inherit from this.
 """
 from abc import ABC
-from typing import Generic, TypeVar, Optional, List, Tuple
+from typing import Generic, List, Optional, Tuple, TypeVar
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+
+from app.common.utils.pagination import PaginatedResponse, PaginationParams
 from app.infrastructure.db.base.base_model import Base
-from app.common.utils.pagination import PaginationParams, PaginatedResponse
 
 # TypeVar for generic repository pattern
 # ModelType must be a class that inherits from Base

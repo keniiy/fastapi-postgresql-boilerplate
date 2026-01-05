@@ -5,6 +5,7 @@ import logging
 import sys
 from contextvars import ContextVar
 from typing import Any, Dict, Optional
+
 from pythonjsonlogger import jsonlogger
 
 # Context variable for trace ID (accessible globally)

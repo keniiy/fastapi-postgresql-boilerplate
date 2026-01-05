@@ -5,6 +5,7 @@ No database dependencies, just business logic.
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
+
 from app.common.enums.user import UserRole
 
 

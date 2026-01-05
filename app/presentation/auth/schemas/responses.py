@@ -3,6 +3,7 @@ Authentication response schemas.
 Re-exports common schemas and keeps auth-specific ones.
 """
 from pydantic import BaseModel, ConfigDict
+
 from app.common.schemas import AuthResponse, UserResponse
 
 # Re-export common schemas for backward compatibility

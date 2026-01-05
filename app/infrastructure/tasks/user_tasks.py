@@ -4,8 +4,8 @@ User-related background tasks.
 import logging
 from datetime import datetime, timezone
 
-from app.infrastructure.tasks.celery_app import celery_app
 from app.infrastructure.tasks.base import BaseTask
+from app.infrastructure.tasks.celery_app import celery_app
 
 logger = logging.getLogger(__name__)
 

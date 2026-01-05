@@ -1,9 +1,10 @@
 """
 User database model - SQLAlchemy model for users table.
 """
-from sqlalchemy import Column, String, Boolean, Enum
-from app.infrastructure.db.base.base_model import BaseModel
+from sqlalchemy import Boolean, Column, Enum, String
+
 from app.common import UserRole
+from app.infrastructure.db.base.base_model import BaseModel
 
 
 class User(BaseModel):

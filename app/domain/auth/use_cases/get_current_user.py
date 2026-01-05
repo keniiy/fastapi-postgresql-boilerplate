@@ -1,10 +1,10 @@
 """
 Get current user use case.
 """
-from app.domain.user.use_cases.get_user import GetUserByIdUseCase
-from app.domain.user.types.repository import IUserRepository
-from app.domain.user.entities.user import User
 from app.common.exceptions import NotFoundError
+from app.domain.user.entities.user import User
+from app.domain.user.types.repository import IUserRepository
+from app.domain.user.use_cases.get_user import GetUserByIdUseCase
 
 
 class GetCurrentUserUseCase:

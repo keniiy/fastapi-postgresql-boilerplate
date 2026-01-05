@@ -2,12 +2,13 @@
 Pytest configuration and fixtures.
 Sets up test database, client, and common fixtures.
 """
-import os
-import pytest
 import asyncio
+import os
 from typing import AsyncGenerator, Generator
-from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+
+import pytest
+from httpx import ASGITransport, AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
 # Set test environment variables BEFORE importing app
@@ -20,7 +21,6 @@ os.environ["RATE_LIMIT_ENABLED"] = "false"  # Disable rate limiting in tests
 from app.app import app
 from app.infrastructure.db.base.base_model import Base
 from app.infrastructure.db.config import get_db
-
 
 # Test database URL - using SQLite for fast tests
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"

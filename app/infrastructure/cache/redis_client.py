@@ -2,8 +2,8 @@
 Redis client configuration and connection management.
 """
 import logging
-from typing import Optional
 from contextlib import asynccontextmanager
+from typing import Optional
 
 import redis.asyncio as redis
 from redis.asyncio import Redis

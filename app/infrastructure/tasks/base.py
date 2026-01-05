@@ -3,6 +3,7 @@ Base task class with common functionality.
 """
 import logging
 from typing import Any, Optional
+
 from celery import Task
 
 from app.common.utils.logging import set_trace_id

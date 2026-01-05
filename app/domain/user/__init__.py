@@ -6,11 +6,11 @@ from .entities import User
 from .types import IUserRepository
 from .use_cases import (
     CreateUserUseCase,
-    GetUserByIdUseCase,
+    DeactivateUserUseCase,
     GetUserByEmailUseCase,
+    GetUserByIdUseCase,
     GetUserByPhoneUseCase,
     UpdateUserUseCase,
-    DeactivateUserUseCase,
 )
 
 __all__ = [

@@ -1,27 +1,28 @@
 from contextlib import asynccontextmanager
 from typing import List
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
+from app.common.exceptions import DomainException
+from app.common.utils.logging import setup_logging
+from app.core.config import get_settings
 from app.infrastructure.db.config import init_db
 from app.presentation.auth import router as auth_router
-from app.common.exceptions import DomainException
 from app.presentation.exceptions import (
     domain_exception_handler,
-    validation_exception_handler,
     general_exception_handler,
+    validation_exception_handler,
 )
-from app.presentation.middleware.trace_id import TraceIDMiddleware
 from app.presentation.middleware.rate_limit import (
+    RateLimitExceeded,
+    RateLimitMiddleware,
     limiter,
     rate_limit_exception_handler,
-    RateLimitMiddleware,
-    RateLimitExceeded,
 )
-from app.core.config import get_settings
-from app.common.utils.logging import setup_logging
+from app.presentation.middleware.trace_id import TraceIDMiddleware
 
 # Load environment variables
 load_dotenv()
@@ -36,6 +37,7 @@ setup_logging(log_level=settings.log_level, json_format=settings.log_json_format
 async def lifespan(app: FastAPI):
     """Lifespan context manager for startup and shutdown events"""
     import logging
+
     from app.infrastructure.cache.redis_client import redis_client
 
     logger = logging.getLogger(__name__)
@@ -156,9 +158,10 @@ app.include_router(auth_router)
 @app.get("/health")
 async def health():
     """Enhanced health check endpoint"""
-    from app.infrastructure.db.config import engine
-    from app.infrastructure.cache.redis_client import redis_client
     from sqlalchemy import text
+
+    from app.infrastructure.cache.redis_client import redis_client
+    from app.infrastructure.db.config import engine
 
     health_status = {"status": "ok", "service": "api", "version": "1.0.0"}
 

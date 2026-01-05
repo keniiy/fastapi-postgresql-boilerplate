@@ -4,9 +4,9 @@ Provides a high-level API for caching with automatic serialization.
 """
 import json
 import logging
-from typing import Any, Optional, TypeVar, Callable
 from datetime import timedelta
 from functools import wraps
+from typing import Any, Callable, Optional, TypeVar
 
 from redis.asyncio import Redis
 

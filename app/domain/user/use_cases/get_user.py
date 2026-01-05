@@ -2,6 +2,7 @@
 Get user use cases.
 """
 from typing import Optional
+
 from app.domain.user.entities.user import User
 from app.domain.user.types.repository import IUserRepository
 

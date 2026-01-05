@@ -6,34 +6,35 @@ Rate limiting is handled by global middleware.
 """
 from fastapi import APIRouter, Depends, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from app.presentation.auth.schemas import (
-    RegisterRequest,
-    LoginRequest,
-    RefreshTokenRequest,
-    ChangePasswordRequest,
-    UpdateProfileRequest,
-    TokenResponse,
-)
+
 from app.common.schemas import AuthResponse, UserResponse
-from app.presentation.auth.dependencies import (
-    get_register_use_case,
-    get_login_use_case,
-    get_refresh_token_use_case,
-    get_current_user_use_case,
-    get_update_profile_use_case,
-    get_change_password_use_case,
-    get_deactivate_account_use_case,
-    get_logout_use_case,
-    get_current_user_id,
-)
-from app.domain.auth.use_cases.register import RegisterUseCase
-from app.domain.auth.use_cases.login import LoginUseCase
-from app.domain.auth.use_cases.refresh_token import RefreshTokenUseCase
-from app.domain.auth.use_cases.get_current_user import GetCurrentUserUseCase
-from app.domain.auth.use_cases.update_profile import UpdateProfileUseCase
 from app.domain.auth.use_cases.change_password import ChangePasswordUseCase
 from app.domain.auth.use_cases.deactivate_account import DeactivateAccountUseCase
+from app.domain.auth.use_cases.get_current_user import GetCurrentUserUseCase
+from app.domain.auth.use_cases.login import LoginUseCase
 from app.domain.auth.use_cases.logout import LogoutUseCase
+from app.domain.auth.use_cases.refresh_token import RefreshTokenUseCase
+from app.domain.auth.use_cases.register import RegisterUseCase
+from app.domain.auth.use_cases.update_profile import UpdateProfileUseCase
+from app.presentation.auth.dependencies import (
+    get_change_password_use_case,
+    get_current_user_id,
+    get_current_user_use_case,
+    get_deactivate_account_use_case,
+    get_login_use_case,
+    get_logout_use_case,
+    get_refresh_token_use_case,
+    get_register_use_case,
+    get_update_profile_use_case,
+)
+from app.presentation.auth.schemas import (
+    ChangePasswordRequest,
+    LoginRequest,
+    RefreshTokenRequest,
+    RegisterRequest,
+    TokenResponse,
+    UpdateProfileRequest,
+)
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 

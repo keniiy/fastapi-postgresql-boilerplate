@@ -1,10 +1,10 @@
 """
 Deactivate account use case.
 """
-from app.domain.user.use_cases.get_user import GetUserByIdUseCase
-from app.domain.user.use_cases.deactivate_user import DeactivateUserUseCase
-from app.domain.user.types.repository import IUserRepository
 from app.common.exceptions import NotFoundError
+from app.domain.user.types.repository import IUserRepository
+from app.domain.user.use_cases.deactivate_user import DeactivateUserUseCase
+from app.domain.user.use_cases.get_user import GetUserByIdUseCase
 
 
 class DeactivateAccountUseCase:

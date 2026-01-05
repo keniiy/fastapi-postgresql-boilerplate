@@ -2,10 +2,9 @@
 Base model for all SQLAlchemy models.
 All database models should inherit from this Base.
 """
+from sqlalchemy import Column, DateTime, Integer
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.sql import func
-
 
 # Create the declarative base
 Base = declarative_base()

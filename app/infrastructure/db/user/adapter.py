@@ -3,14 +3,16 @@ Repository adapter - bridges infrastructure repository with domain interface.
 Converts between SQLAlchemy models and domain entities.
 This is infrastructure concern - adapting infrastructure to domain.
 """
-from typing import Optional, Tuple
 from datetime import datetime
+from typing import Optional, Tuple
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.domain.user.types.repository import IUserRepository
-from app.domain.user.entities.user import User
-from app.infrastructure.db.user.repository import UserRepository as InfraUserRepository
-from app.infrastructure.db.user.model import User as UserModel
+
 from app.common.enums.user import UserRole
+from app.domain.user.entities.user import User
+from app.domain.user.types.repository import IUserRepository
+from app.infrastructure.db.user.model import User as UserModel
+from app.infrastructure.db.user.repository import UserRepository as InfraUserRepository
 
 
 class UserRepositoryAdapter(IUserRepository):

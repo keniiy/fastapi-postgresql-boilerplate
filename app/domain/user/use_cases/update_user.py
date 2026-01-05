@@ -1,9 +1,10 @@
 """
 Update user use case.
 """
+from datetime import datetime
+
 from app.domain.user.entities.user import User
 from app.domain.user.types.repository import IUserRepository
-from datetime import datetime
 
 
 class UpdateUserUseCase:
