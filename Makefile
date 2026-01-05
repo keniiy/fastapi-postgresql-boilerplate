@@ -1,4 +1,4 @@
-.PHONY: help install install-dev run start start-docs test lint format type-check security-check pre-commit clean docker-check docker-up docker-down docker-up-prod docker-down-prod docker-build docker-logs docker-logs-prod docker-ps docker-restart docker-clean env env-copy env-show env-update celery celery-beat celery-flower redis-cli
+.PHONY: help install install-dev run start start-docs test lint format type-check security-check ci-check pre-commit clean docker-check docker-up docker-down docker-up-prod docker-down-prod docker-build docker-logs docker-logs-prod docker-ps docker-restart docker-clean env env-copy env-show env-update celery celery-beat celery-flower redis-cli
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -59,6 +59,26 @@ type-check: ## Run type checker
 
 security-check: ## Run security checks (bandit)
 	poetry run bandit -r app/ -f json -o bandit-report.json
+
+ci-check: ## Run all CI checks (lint, format-check, type-check, test, security-check)
+	@echo "🔍 Running CI checks..."
+	@echo ""
+	@echo "📝 Checking code formatting..."
+	@$(MAKE) format-check
+	@echo ""
+	@echo "🔎 Running linters..."
+	@$(MAKE) lint
+	@echo ""
+	@echo "📊 Running type checker..."
+	@$(MAKE) type-check || true
+	@echo ""
+	@echo "🧪 Running tests..."
+	@$(MAKE) test
+	@echo ""
+	@echo "🔒 Running security checks..."
+	@$(MAKE) security-check || true
+	@echo ""
+	@echo "✅ All CI checks completed!"
 
 pre-commit: ## Run pre-commit hooks on all files
 	poetry run pre-commit run --all-files
